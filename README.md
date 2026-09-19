@@ -11,13 +11,13 @@ Rscript code/00_download_data.R    # download raw data into data/raw/ (about a m
 Rscript run_all.R                  # clean, merge, analyze, knit paper/paper.html
 ```
 
-`run_all.R` runs every numbered script in `code/` in order and then knits the paper. It works at every stage of the project: scripts that are still skeletons print a "TODOs not completed yet" message, and the paper knits with placeholders until results exist. (Runtime with data present: a few seconds at this stage.)
+`run_all.R` runs every numbered script in `code/` in order and then knits the paper. (Runtime with data present: about 6 seconds on the instructor's laptop.) Every number, table and figure in the paper is computed by `code/05_analysis.R` and the inline R code in `paper/paper.Rmd`.
 
 ## Folder structure
 
 | Path | Role |
 |---|---|
-| `code/` | numbered scripts, run in order by `run_all.R` (`00` download, `01`-`02` clean, `03`-`04` clean and merge, later `05` analysis) |
+| `code/` | numbered scripts, run in order by `run_all.R` (`00` download, `01`-`04` clean and merge into `data/clean/panel.rds`, `05` analysis) |
 | `code/extra/` | documentation scripts that `run_all.R` does not run (`make_vdem_extract.R`) |
 | `data/raw/` | raw data as downloaded. **Never edit.** Git-ignored; re-created by `code/00_download_data.R` |
 | `data/clean/` | cleaned data written by the scripts. Git-ignored; re-created by `run_all.R` |
