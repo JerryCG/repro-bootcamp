@@ -1,6 +1,6 @@
 # Do governments censor the internet more during armed conflict?
 
-Author: <your name>
+Author: Hennes Barnehl
 
 A small, fully reproducible research project used in the Math Camp session on reproducible science and coding agents. **Research question:** do governments censor the internet more when they face armed conflict, and is the effect stronger in autocracies? We combine country-year data on internet censorship and regime type (V-Dem), armed conflict (UCDP/PRIO), and GDP and internet use (World Bank WDI), and estimate a two-way fixed-effects model with `fixest`. The analysis is pre-specified in `pap/pre_analysis_plan.md`.
 

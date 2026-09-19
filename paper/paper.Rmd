@@ -1,6 +1,6 @@
 ---
 title: "Do Governments Censor the Internet More During Armed Conflict?"
-author: "<your name>"
+author: "Hennes Barnehl"
 date: "`r Sys.Date()`"
 output: html_document
 ---
