@@ -11,9 +11,21 @@ library(here)
 library(tidyverse)
 library(modelsummary)
 
-# Results exist only once code/05_analysis.R has been written and run.
+# All results come from code/05_analysis.R (run by run_all.R).
 results_file <- here("output", "tables", "main_results.rds")
-have_results <- file.exists(results_file)
+if (!file.exists(results_file))
+  stop("output/tables/main_results.rds not found: run Rscript run_all.R ",
+       "(or code/05_analysis.R) before knitting this paper.")
+res <- readRDS(results_file)
+
+# Number formatting for inline R (so no number is ever typed by hand).
+num  <- function(x, digits = 3) formatC(x, format = "f", digits = digits, big.mark = ",")
+pval <- function(p) if (p < 0.001) "p < 0.001" else paste0("p = ", num(p, 3))
+
+# Pieces of the confirmatory results used in the text.
+h1 <- res$coefs |> filter(term == "conflict")
+h2 <- res$coefs |> filter(term == "conflict:autocracy")
+supported <- function(row) row$estimate > 0 & row$p_value < res$alpha
 ```
 
 ## Introduction
@@ -24,9 +36,7 @@ Governments restrict access to information when they feel threatened. Armed conf
 
 We combine three sources. Internet censorship, regime type, and country identifiers come from the V-Dem Country-Year dataset (v16); armed conflict comes from the UCDP/PRIO Armed Conflict Dataset (version 26.1); GDP per capita and internet use come from the World Bank's World Development Indicators. The unit of analysis is the country-year.
 
-<!-- TODO 1: load the saved results: results <- readRDS(here("output", "tables", "main_results.rds")) -->
-
-<!-- TODO 2: report N, number of countries, and years covered as inline R code, not typed numbers -->
+The conflict indicator is 1 in a country-year if at least one UCDP/PRIO armed conflict with at least 25 battle-related deaths is located in the country, and 0 otherwise. V-Dem is the master frame: the panel contains exactly the country-years that V-Dem covers, `r num(res$n_panel, 0)` country-years in `r res$n_panel_countries` countries. The regression sample covers `r res$year_min`-`r res$year_max` and contains `r num(res$n_obs, 0)` country-years from `r res$n_countries` countries, after listwise deletion of `r num(res$n_dropped, 0)` country-years with missing values in the model variables. Armed conflict occurs in `r num(res$n_conflict_obs, 0)` of these country-years (`r num(100 * res$n_conflict_obs / res$n_obs, 1)`%), and `r num(100 * res$n_autocracy_obs / res$n_obs, 1)`% are autocracy-years.
 
 ## Research Design
 
@@ -34,15 +44,27 @@ We estimate a two-way fixed-effects model of censorship on conflict, its interac
 
 ## Results (confirmatory)
 
-<!-- TODO 3: report the conflict coefficient and its standard error as inline R -->
+We estimate the model of the pre-analysis plan on `r num(res$n_obs, 0)` country-years from `r res$n_countries` countries. The table below reports the estimates and the figure shows the underlying means.
 
-<!-- TODO 4: include the regression table (modelsummary) from the saved results -->
+**H1.** In democracies (`autocracy` = 0), a conflict year is associated with a change in censorship of `r num(h1$estimate)` scale points (SE = `r num(h1$std_error)`, `r pval(h1$p_value)`, `r num((1 - res$alpha) * 100, 0)`% CI [`r num(h1$conf_low)`, `r num(h1$conf_high)`]). In a two-sided test at alpha = `r res$alpha`, H1 is **`r if (supported(h1)) "supported" else "not supported"`**.
 
-<!-- TODO 5: include the figure from output/figures/ -->
+**H2.** The interaction of conflict and autocracy is `r num(h2$estimate)` (SE = `r num(h2$std_error)`, `r pval(h2$p_value)`, `r num((1 - res$alpha) * 100, 0)`% CI [`r num(h2$conf_low)`, `r num(h2$conf_high)`]). H2 is **`r if (supported(h2)) "supported" else "not supported"`**. For interpretation, the implied conflict effect in autocracies (conflict plus interaction) is `r num(res$effect_autocracy$estimate)` (SE = `r num(res$effect_autocracy$std_error)`, `r pval(res$effect_autocracy$p_value)`); this is not a separate test.
 
-```{r todo-guard, eval=!have_results, results='asis'}
-cat("*Results are not available yet: complete the TODOs and run the analysis script.*")
+**Deviations from the pre-analysis plan.** None: the model, sample, and inference criteria are those of the plan (git tag `pap-v1`).
+
+```{r results-table}
+modelsummary(list("Censorship" = res$model),
+             coef_map = res$coef_map, gof_map = res$gof_map,
+             statistic = res$statistic, fmt = res$fmt, stars = FALSE,
+             title = "Confirmatory model: conflict and internet censorship",
+             notes = "Higher censorship = more internet filtering. Standard errors clustered by country.")
 ```
+
+```{r results-figure, out.width="100%", fig.alt="Mean internet censorship by year, for conflict and non-conflict country-years, in autocracies and democracies."}
+knitr::include_graphics(here("output", "figures", "censorship_by_conflict.png"))
+```
+
+*The figure is descriptive: mean censorship by conflict status and regime type, with dot size showing the number of country-years behind each mean. It is not a test of the hypotheses.*
 
 ## Exploratory analyses
 
