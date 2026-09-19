@@ -1,0 +1,53 @@
+---
+title: "Do Governments Censor the Internet More During Armed Conflict?"
+author: "<your name>"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(here)
+library(tidyverse)
+library(modelsummary)
+
+# Results exist only once code/05_analysis.R has been written and run.
+results_file <- here("output", "tables", "main_results.rds")
+have_results <- file.exists(results_file)
+```
+
+## Introduction
+
+Governments restrict access to information when they feel threatened. Armed conflict is a prominent threat: it raises the stakes of controlling what citizens see and share, and it gives rulers a security rationale for doing so. This paper asks whether governments censor the internet more when armed conflict takes place on their territory, and whether this effect is stronger in autocracies, where rulers face fewer institutional and legal constraints on censorship.
+
+## Data
+
+We combine three sources. Internet censorship, regime type, and country identifiers come from the V-Dem Country-Year dataset (v16); armed conflict comes from the UCDP/PRIO Armed Conflict Dataset (version 26.1); GDP per capita and internet use come from the World Bank's World Development Indicators. The unit of analysis is the country-year.
+
+<!-- TODO 1: load the saved results: results <- readRDS(here("output", "tables", "main_results.rds")) -->
+
+<!-- TODO 2: report N, number of countries, and years covered as inline R code, not typed numbers -->
+
+## Research Design
+
+We estimate a two-way fixed-effects model of censorship on conflict, its interaction with autocracy, and two controls, with country and year fixed effects and standard errors clustered by country. The specification, sample, and inference criteria are fixed in the pre-analysis plan (`pap/pre_analysis_plan.md`), which was committed before the data were downloaded.
+
+## Results (confirmatory)
+
+<!-- TODO 3: report the conflict coefficient and its standard error as inline R -->
+
+<!-- TODO 4: include the regression table (modelsummary) from the saved results -->
+
+<!-- TODO 5: include the figure from output/figures/ -->
+
+```{r todo-guard, eval=!have_results, results='asis'}
+cat("*Results are not available yet: complete the TODOs and run the analysis script.*")
+```
+
+## Exploratory analyses
+
+<!-- Everything that is not in the pre-analysis plan goes here, clearly labeled as exploratory. -->
+
+## Reproducibility statement
+
+<!-- Fill in at the end: how to re-run everything (Rscript run_all.R), software versions (sessionInfo()). -->

@@ -1,0 +1,16 @@
+# Data: raw data are re-created by code/00_download_data.R, clean data by code/01-04
+data/raw/*
+data/clean/*
+!data/raw/.gitkeep
+!data/clean/.gitkeep
+
+# Knitted output is reproducible, so it stays out of git
+*.html
+*_files/
+*_cache/
+
+# R / RStudio / OS
+.Rhistory
+.RData
+.Rproj.user/
+.DS_Store
