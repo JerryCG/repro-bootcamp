@@ -68,8 +68,16 @@ knitr::include_graphics(here("output", "figures", "censorship_by_conflict.png"))
 
 ## Exploratory analyses
 
-<!-- Everything that is not in the pre-analysis plan goes here, clearly labeled as exploratory. -->
+*No exploratory analyses have been run. Anything that is not in the pre-analysis plan (other censorship measures, controls, lags, subsamples) goes here, and is labeled as exploratory.*
 
 ## Reproducibility statement
 
-<!-- Fill in at the end: how to re-run everything (Rscript run_all.R), software versions (sessionInfo()). -->
+All numbers, the table, and the figure in this paper are computed by code. To reproduce everything from the raw data, run `Rscript code/00_download_data.R` (downloads the raw data, and records their provenance in `data/raw/SOURCES.txt`) and then `Rscript run_all.R` from the project folder. The analysis was run with `r R.version.string` and fixest `r as.character(packageVersion("fixest"))`; the full session information is in the appendix. The confirmatory analysis is the one specified in `pap/pre_analysis_plan.md`, committed with the tag `pap-v1`.
+
+AI use: the cleaning, merging, and analysis scripts and this document were drafted with a coding agent (Claude Code) and are recorded as co-authored in the git history.
+
+## Appendix: session information
+
+```{r session-info}
+sessionInfo()
+```
