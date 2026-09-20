@@ -66,28 +66,32 @@ Done when: you refresh your repo on GitHub and see the commit.
 
 ## 3. Pre-analysis plan (Block 4)
 
-Write the hypotheses and the rationale in your own words. **The model is fixed for today** —
-paste this block into `pap/pre_analysis_plan.md` under "Estimation" and keep the variable names,
-otherwise your numbers will not match anyone else's:
+`pap/pre_analysis_plan.md` is **already filled in, except for the research question**. Everything
+else is fixed for today: your agent will faithfully implement whatever model your PAP contains, so
+if you change it, your numbers will not match anyone else's this afternoon.
 
-```
-Model (fixed for today; put this in your PAP under "Estimation"):
-  censorship ~ conflict + conflict:autocracy + autocracy + log(gdppc) + internet_pct | country + year
-  fixest::feols(..., cluster = ~country); listwise deletion; two-sided, alpha = 0.05
-Variables:
-  DV        censorship = -v2smgovfilprc   (V-Dem codes higher = LESS filtering, so we reverse it: higher = more filtering)
-  IV        conflict = 1 if at least one UCDP armed conflict (>= 25 battle deaths) is located in the country that year, else 0
-  moderator autocracy = 1 if v2x_regime is 0 or 1 (closed or electoral autocracy)
-  controls  gdppc (WDI NY.GDP.PCAP.KD, entered as log), internet_pct (WDI IT.NET.USER.ZS)
-Sample: country-years covered by V-Dem, 2000-2024
-Hypotheses: H1 conflict raises censorship (democracies). H2 the effect is larger in autocracies.
-```
+**Your task:** open the file, read it, and write the research question in one sentence in your own
+words (replace the `<!-- ... -->` line under `## Research question`). Then commit and tag.
+
+Read for these five decisions - each one is a place where a later choice could have been made to
+suit the result:
+
+1. **DV sign.** `censorship = -v2smgovfilprc`: V-Dem codes *higher = less* filtering, so the sign is
+   reversed. A coding decision like this belongs in the PAP, not in a footnote discovered later.
+2. **IV threshold.** `conflict` = 1 if at least one UCDP conflict with >= 25 battle deaths is
+   located in the country that year. 25 is a choice; 1000 would be another.
+3. **Sample.** V-Dem country-years, 2000-2024, V-Dem as the master frame. Which units are dropped,
+   and where `conflict = 0` is created, is written down.
+4. **Estimation.** One model: `censorship ~ conflict + conflict:autocracy + autocracy + log(gdppc) +
+   internet_pct | country + year`, `fixest::feols(..., cluster = ~country)`, listwise deletion.
+5. **Inference criteria.** Two-sided, alpha = 0.05, and what counts as support for H1 and H2 -
+   written before the estimate exists, so "p = 0.06 is marginally significant" is not available later.
 
 Commit the plan and tag it:
 
 ```bash
 git add pap/pre_analysis_plan.md
-git commit -m "Add pre-analysis plan"
+git commit -m "Add the research question to the pre-analysis plan"
 git tag pap-v1
 git push
 git push --tags
