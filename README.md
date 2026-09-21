@@ -16,7 +16,7 @@ Rscript run_all.R                  # clean, merge, analyze, knit paper/paper.htm
 ## Folder structure
 
 | Path | Role |
-|------------------------------------|------------------------------------|
+|----|----|
 | `code/` | numbered scripts, run in order by `run_all.R` (`00` download, `01`-`02` clean, `03`-`04` clean and merge, later `05` analysis) |
 | `code/extra/` | documentation scripts that `run_all.R` does not run (`make_vdem_extract.R`) |
 | `data/raw/` | raw data as downloaded. **Never edit.** Git-ignored; re-created by `code/00_download_data.R` |
