@@ -24,9 +24,11 @@ Governments restrict access to information when they feel threatened. Armed conf
 
 We combine three sources. Internet censorship, regime type, and country identifiers come from the V-Dem Country-Year dataset (v16); armed conflict comes from the UCDP/PRIO Armed Conflict Dataset (version 26.1); GDP per capita and internet use come from the World Bank's World Development Indicators. The unit of analysis is the country-year.
 
-<!-- TODO 1: load the saved results: results <- readRDS(here("output", "tables", "main_results.rds")) -->
+```{r load-results, include=FALSE, eval=have_results}
+results <- readRDS(results_file)
+```
 
-<!-- TODO 2: report N, number of countries, and years covered as inline R code, not typed numbers -->
+The confirmatory estimation sample contains `r results$analysis_numbers$n` country-years from `r results$analysis_numbers$countries` countries, covering `r results$analysis_numbers$first_year` through `r results$analysis_numbers$last_year`.
 
 ## Research Design
 
@@ -34,11 +36,15 @@ We estimate a two-way fixed-effects model of censorship on conflict, its interac
 
 ## Results (confirmatory)
 
-<!-- TODO 3: report the conflict coefficient and its standard error as inline R -->
+The estimated effect of conflict is `r results$coefficient_table |> filter(term == "conflict") |> pull(estimate)` (clustered standard error = `r results$coefficient_table |> filter(term == "conflict") |> pull(std_error)`).
 
-<!-- TODO 4: include the regression table (modelsummary) from the saved results -->
+```{r confirmatory-model, eval=have_results}
+modelsummary(results$model, stars = FALSE)
+```
 
-<!-- TODO 5: include the figure from output/figures/ -->
+```{r descriptive-figure, eval=have_results, fig.cap="Mean government internet filtering by armed conflict status"}
+knitr::include_graphics(here("output", "figures", "descriptive_censorship_by_conflict.png"))
+```
 
 ```{r todo-guard, eval=!have_results, results='asis'}
 cat("*Results are not available yet: complete the TODOs and run the analysis script.*")
